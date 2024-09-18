@@ -1,0 +1,21 @@
+alias rse="Rscript -e"
+
+r_install() {
+    cmd="install.packages('"
+    local first=1
+    for arg in "$@"; do
+        if [ -n "$first" ]; then
+            first=
+        else
+            cmd="$cmd, '"
+        fi
+        cmd="$cmd$arg'"
+    done
+    cmd="$cmd, repos = 'http://cran.us.r-project.org')"
+    cmd=(Rscript -e "$cmd")
+    echo "Running: ${cmd[@]}" >&2
+    "${cmd[@]}"
+}
+export -f r_install
+defn rsei r_install
+defn rsi r_install
